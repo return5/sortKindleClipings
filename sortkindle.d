@@ -12,7 +12,7 @@ void main(string[] args) {
 	assert(args[1].isFile); //check if args[1] is a valid file.
 	File[string] files;  //associative array of files
 	string clipping   = readText(args[1]); //clipping file to be read
-    auto entire_part  = ctRegex!r"(.+[\r*|\n*]+)+?(==========)";  //gets entire clipping
+        auto entire_part  = ctRegex!r"(.+[\r*|\n*]+)+?(==========)";  //gets entire clipping
 	auto title_part   = ctRegex!r"(.+)(\r|\n)*(- Highlight)"; //matches title
 	auto loc_part     = ctRegex!r"- Highlight Loc.\s+\d+\s*"; //matches location number.
 
@@ -26,14 +26,13 @@ void main(string[] args) {
 				string title     = strip(title_match.hit); //strip unneeded whitespace and stroe as string
 				string clip      = strip(clip_match);
 				string location  = strip(loc_match.hit);
-
-                if((title in files) == null) { //if file doesnt exist for the title, create one in files array
+                		if((title in files) == null) { //if file doesnt exist for the title, create one in files array
 					files[title] = File(title ~ "_clippings.txt","w");
 				}
-                else {
-				    files[title].writeln("\n",'='.repeat(12),"\n");  //write to file
-                    }
-                files[title].write(clip,"\n\t ",location);
+				else {
+					files[title].writeln("\n",'='.repeat(12),"\n");  //write to file
+               	 		}
+               	 		files[title].write(clip,"\n\t ",location);
 			}
 		}
 	}
