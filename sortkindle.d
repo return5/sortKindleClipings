@@ -11,6 +11,7 @@ import std.regex;
 import std.range;
 
 string getTitle(string title, string clip) {
+    writeln(title);
     if(clip.split(regex(" +")).length == 1) {
         return title ~ "_defs.txt";
     }
@@ -25,6 +26,7 @@ void main(string[] args) {
     auto entire_part      = ctRegex!r"(.+[\r*|\n*]+)+?(==========)";  //gets entire clipping
 	auto title_part       = ctRegex!r"(.+)(\r|\n)*(- Highlight)";    //matches title
 	auto loc_part         = ctRegex!r"- Highlight Loc.\s+\d+\s*";  //matches location number.
+    auto remove           = ctRegex!("[\n|\r]*","g");              //match to remove these chars from title
 
 	//go through text file and get text which matches entire_part regex 
 	foreach(line; matchAll(clipping,entire_part)) { 	
@@ -33,7 +35,7 @@ void main(string[] args) {
 			auto clip_match  = strip(line.captures[1]);                     //get clippiing
 			auto loc_match   = matchFirst(line.captures[0],loc_part);      //get loc.
 			if(title_match && clip_match && loc_match) {                  //if all three were matched successfully
-                string title     = getTitle(title_match.hit,clip_match);
+                string title     = getTitle(replaceAll(strip(title_match.captures[1],"\357\273\277"),remove,""),clip_match);
 				string clip      = strip(clip_match);
 				string location  = strip(loc_match.hit);
                 if((title in files) == null) {                   //if file doesnt exist for the title, create one in files array
