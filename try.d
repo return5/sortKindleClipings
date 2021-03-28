@@ -1,3 +1,4 @@
+
 //written by: github/return5
 //released under MIT license 
 //program which takes text file containing clippings from amazon kindle and seperates each clipping into a text file for the book which it came from.
@@ -22,7 +23,6 @@ string getTitle(immutable string title,immutable string clip) {
 }
 
 void main(string[] args) {
-	File[string] files;                                                 //associative array of files
 	immutable string clipping       = readText(args[1]);                         //clipping file to be read
     immutable auto entire_part      = ctRegex!r"(.+[\r*|\n*]+)+?(==========)";  //gets entire clipping
 	immutable auto title_part       = ctRegex!r"(.+)(\r|\n)*(- Highlight)";    //matches title
@@ -39,13 +39,9 @@ void main(string[] args) {
                 immutable string title    = getTitle(title_match,clip_match);
 				immutable string clip     = strip(clip_match);
 				immutable string location = strip(loc_match);
-                if((title in files) == null) {                   //if file doesnt exist for the title, create one in files array
-					files[title] = File(strip(title),"w");
-				}
-				else {
-					files[title].writeln("\n",'='.repeat(12),"\n");  //write to file
-               	}
-               	files[title].write(clip,"\n\t ",location);
+                writeln("title is: ", title);
+                writeln("clip is: ",clip);
+                writeln("location is ", location);
 			}
 		}
 	}
