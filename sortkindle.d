@@ -14,7 +14,7 @@ string getTitle(immutable string title,immutable string clip) {
     immutable auto remove      = ctRegex!("[\n|\r|\"|:|\']*","g");    //match to remove these chars from title
     immutable string new_title = replaceAll(strip(title,"\357\273\277"),remove,"");
     if(clip.split(regex(" +")).length == 1) {
-        return new_title ~ "_defs.txt";
+        return "definitions.txt";
     }
     else {
         return new_title ~ "_clip.txt";
